@@ -25,6 +25,8 @@ hs_err_pid*
 # build and IDE
 .idea
 .gradle
+gradlew
+gradlew.*
 build
 
 

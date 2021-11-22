@@ -3,8 +3,8 @@ package com.acme.servermgr;
 /**
  * Manage all servers (service providers) being tracked by the Acme server tracking system
  * For now just some simple static methods for use in school project.
- * Treat this as a 'black box' that gives back indicators like up, running etc for
- * various 'services' that are being managed.
+ * Treat this as a 'black box' that gives back indicators like 'up', true, or percentages like '95%' for
+ * the various 'services' that are being managed.
  */
 public class ServerManager {
 

@@ -46,12 +46,15 @@ And it will pull in about 500MB of libraries/jars.
 
 The gradle build task will pull in all spring dependencies, and the java and gradle Spring plug-in will make the following Gradle tasks of interest available to you (usable from command line or from within IntelliJ):
 
-test - this will run the Test class(es) found in the src/test portion of project 
-bootRun - this will start up the server, at which point it is waiting for requests as described above.
+**test** - this will run the Test class(es) found in the src/test portion of project 
+
+**bootRun** - this will start up the server, at which point it is waiting for requests as described above.
 
 If the server has started properly you should see a number of logging statements, ending with something like this:
-`2019-11-04 15:46:11.678 INFO 16793 --- [ main] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8080 (http) with context path ''
-2019-11-04 15:46:11.681 INFO 16793 --- [ main] statusmgr.Application : Started Application in 1.86 seconds (JVM running for 2.475)`
+
+`2019-11-04 15:46:11.678 INFO 16793 --- [ main] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat started on port(s): 8080 (http) with context path ''`
+
+`2019-11-04 15:46:11.681 INFO 16793 --- [ main] statusmgr.Application : Started Application in 1.86 seconds (JVM running for 2.475)`
 
 You can then make requests via a browser or curl following the above URL syntax.
 
