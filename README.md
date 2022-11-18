@@ -2,7 +2,7 @@
 Sample web server for MCO152 class exercises on IoC, DIP, DI
 
 This sample shows how to leverage the Spring framework, for simulating a production control server that reports on 
-and manages other manufactoring servers, machinery and processes at the Acme Disk Drive company.
+and manages other manufacturing servers, machinery and processes at the Acme Disk Drive company.
 
 **--> What the web server does** once the Spring server has been started:
 
@@ -37,14 +37,15 @@ The `name` parameter value overrides the default value of “Anonymous” and is
 
 **--> What you'll need**
 
-* Java_version: JDK 14 or higher
-* Gradle (If using JDK 17 you need the 7.3 version of Gradle, (pre-release as of 11/15))
+* Java_version: JDK 17 or higher
+* Gradle: version 7.3 or higher
 * Spring Boot Framework, but you don’t have to install this - it will be pulled in by your first “build”, as Spring is listed as a dependency in the build.gradle file - this will take some time, e.g. 15 minutes,
 And it will pull in about 500MB of libraries/jars.
   
 **--> Building/Starting the web server**
 
 The gradle build task will pull in all spring dependencies, and the java and gradle Spring plug-in will make the following Gradle tasks of interest available to you (usable from command line or from within IntelliJ):
+**build** - Full build of project
 
 **test** - this will run the Test class(es) found in the src/test portion of project 
 

@@ -3,21 +3,21 @@ plugins {
     id "idea"
 
     // Spring is so complicated it has gradle plugins to manage all of the sub-dependencies
-    id "org.springframework.boot" version "2.5.4"
-    id "io.spring.dependency-management" version "1.0.11.RELEASE"
+    id "org.springframework.boot" version "2.7.5"
+    id "io.spring.dependency-management" version "1.0.15.RELEASE"
 }
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
 }
 
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")    // web communication
     implementation('org.springframework.boot:spring-boot-starter-test')   // unit tests that work with MVC
- //   implementation('com.jayway.jsonpath:json-path')
 }
-
 
 test {
     useJUnitPlatform()
