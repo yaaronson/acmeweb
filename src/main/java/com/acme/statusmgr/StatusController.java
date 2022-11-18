@@ -31,11 +31,11 @@ public class StatusController {
     /**
      * Process a request for server status information
      *
-     * @param name optional param identifying the requestor
+     * @param name optional param identifying the requester
      * @return a ServerStatus object containing the info to be returned to the requestor
      */
     @RequestMapping("/status")
-    public ServerStatus greeting(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
+    public ServerStatus getStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
         return new ServerStatus(counter.incrementAndGet(),
                 String.format(template, name));
     }
