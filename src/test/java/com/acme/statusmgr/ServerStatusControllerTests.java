@@ -35,14 +35,14 @@ public class ServerStatusControllerTests {
     private MockMvc mockMvc;
 
     @Test
-    public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
+    public void noNameParamShouldReturnDefaultMessage() throws Exception {
 
         this.mockMvc.perform(get("/server/status")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusDesc").value("Server is up"));
     }
 
     @Test
-    public void paramGreetingShouldReturnTailoredMessage() throws Exception {
+    public void nameParamShouldReturnTailoredMessage() throws Exception {
 
         this.mockMvc.perform(get("/server/status").param("name", "RebYid"))
                 .andDo(print()).andExpect(status().isOk())

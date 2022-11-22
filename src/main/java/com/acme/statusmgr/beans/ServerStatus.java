@@ -7,9 +7,11 @@ import com.acme.servermgr.ServerManager;
  */
 public class ServerStatus {
 
-    private long id;
-    private String contentHeader;
-    private String statusDesc = "Unknown";
+
+    private long id;                // Unique identifier of request, sequential number
+    private String contentHeader;   // Some info about the request
+    private String statusDesc = "Unknown";  // the status being returned
+    private final Integer requestCost = 1;  // the cost in pennies of this request.
 
     /**
      * Construct a ServerStatus using info passed in for identification, and obtaining current
@@ -58,5 +60,12 @@ public class ServerStatus {
         return statusDesc;
     }
 
+    /**
+     * Get the cost of this request
+     * @return Integer representing the cost of request as number of pennies
+     */
+    public Integer getRequestCost() {
+        return requestCost;
+    }
 
 }
