@@ -38,6 +38,7 @@ public class ServerStatusControllerTests {
     public void noNameParamShouldReturnDefaultMessage() throws Exception {
 
         this.mockMvc.perform(get("/server/status")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.requestCost").value(1))
                 .andExpect(jsonPath("$.statusDesc").value("Server is up"));
     }
 
