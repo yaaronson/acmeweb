@@ -3,7 +3,7 @@ plugins {
     id "idea"
 
     // Spring is so complicated it has gradle plugins to manage all of the sub-dependencies
-    id "org.springframework.boot" version "2.7.5"
+    id "org.springframework.boot" version "2.7.10"
     id "io.spring.dependency-management" version "1.0.15.RELEASE"
 }
 
