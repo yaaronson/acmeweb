@@ -54,9 +54,9 @@ public class StatusControllerDetailedTest {
      */
     @Test
     public void testAvailableProcessors() throws Exception{
-        this.mockMvc.perform(get("/server/status/detailed?details=availableProcessors&name=Avrohom"))
+        this.mockMvc.perform(get("/server/status/detailed?details=availableProcessors&name=Yankel"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Yankel"))
                 .andExpect(jsonPath("$.requestCost").value(4))
                 .andExpect(jsonPath("$.statusDesc").value("Server is up, and there are 4 processors available"));
     }
@@ -68,9 +68,9 @@ public class StatusControllerDetailedTest {
      */
     @Test
     public void testFreeJvmMemory() throws Exception{
-        this.mockMvc.perform(get("/server/status/detailed?details=freeJVMMemory&name=Avrohom"))
+        this.mockMvc.perform(get("/server/status/detailed?details=freeJVMMemory&name=Yankel"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Yankel"))
                 .andExpect(jsonPath("$.requestCost").value(8))
                 .andExpect(jsonPath("$.statusDesc").value("Server is up, and there are 127268272 bytes of JVM memory free"));
     }
@@ -82,9 +82,9 @@ public class StatusControllerDetailedTest {
      */
     @Test
     public void testTotalJvmMemory() throws Exception{
-        this.mockMvc.perform(get("/server/status/detailed?details=totalJVMMemory&name=Avrohom"))
+        this.mockMvc.perform(get("/server/status/detailed?details=totalJVMMemory&name=Yankel"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Yankel"))
                 .andExpect(jsonPath("$.requestCost").value(14))
                 .andExpect(jsonPath("$.statusDesc").value("Server is up, and there is a total of 159383552 bytes of JVM memory"));
     }
@@ -96,9 +96,9 @@ public class StatusControllerDetailedTest {
      */
     @Test
     public void testJreVersion() throws Exception{
-        this.mockMvc.perform(get("/server/status/detailed?details=jreVersion&name=Avrohom"))
+        this.mockMvc.perform(get("/server/status/detailed?details=jreVersion&name=Yankel"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Yankel"))
                 .andExpect(jsonPath("$.requestCost").value(20))
                 .andExpect(jsonPath("$.statusDesc").value("Server is up, and the JRE version is 15.0.2+7-27"));
 
@@ -111,9 +111,9 @@ public class StatusControllerDetailedTest {
      */
     @Test
     public void testTempLocation() throws Exception{
-        this.mockMvc.perform(get("/server/status/detailed?details=tempLocation&name=Avrohom"))
+        this.mockMvc.perform(get("/server/status/detailed?details=tempLocation&name=Yankel"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Yankel"))
                 .andExpect(jsonPath("$.requestCost").value(30))
                 .andExpect(jsonPath("$.statusDesc").value("Server is up, and the server's temp file location is M:\\\\AppData\\\\Local\\\\Temp"));
 
@@ -127,11 +127,11 @@ public class StatusControllerDetailedTest {
     @Test
     public void testRequestMultipleDetails() throws Exception {
         this.mockMvc.perform(
-                        get("/server/status/detailed?details=tempLocation,totalJVMMemory,availableProcessors&name=Avrohom"))
+                        get("/server/status/detailed?details=tempLocation,totalJVMMemory,availableProcessors&name=Yankel"))
                 .andDo(print()).andExpect(status().isOk())
 
                 .andExpect(jsonPath("$.contentHeader")
-                        .value("Server Status requested by Avrohom"))
+                        .value("Server Status requested by Yankel"))
 
                 .andExpect(jsonPath("$.requestCost")
                         .value(46))
@@ -150,7 +150,7 @@ public class StatusControllerDetailedTest {
      */
     @Test
     public void testDetailsAreRequired() throws Exception {
-        this.mockMvc.perform(get("/server/status/detailed?name=Avrohom"))
+        this.mockMvc.perform(get("/server/status/detailed?name=Yankel"))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(status().reason(Matchers.is(
                         "Required request parameter 'details' for method parameter type List is not present")));
@@ -165,7 +165,7 @@ public class StatusControllerDetailedTest {
      */
     @Test
     public void testNonExistentDetail() throws Exception {
-        this.mockMvc.perform(get("/server/status/detailed?details=noSuchDetail&name=Avrohom"))
+        this.mockMvc.perform(get("/server/status/detailed?details=noSuchDetail&name=Yankel"))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(status().reason(Matchers.is(
                         "Invalid details option: noSuchDetail")));
@@ -178,11 +178,11 @@ public class StatusControllerDetailedTest {
      */
     @Test
     public void testRepeatedDetails() throws Exception {
-        this.mockMvc.perform(get("/server/status/detailed?details=freeJVMMemory,freeJVMMemory&name=Avrohom"))
+        this.mockMvc.perform(get("/server/status/detailed?details=freeJVMMemory,freeJVMMemory&name=Yankel"))
                 .andDo(print()).andExpect(status().isOk())
 
                 .andExpect(jsonPath("$.contentHeader")
-                        .value("Server Status requested by Avrohom"))
+                        .value("Server Status requested by Yankel"))
 
                 .andExpect(jsonPath("$.requestCost")
                         .value(15))

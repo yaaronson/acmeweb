@@ -38,7 +38,7 @@ The `name` parameter value overrides the default value of “Anonymous” and is
 **--> What you'll need**
 
 * Java_version: JDK 17 or higher
-* Gradle: version 7.3 or higher
+* Gradle: version 7.5 or higher
 * Spring Boot Framework, but you don’t have to install this - it will be pulled in by your first “build”, as Spring is listed as a dependency in the build.gradle file - this will take some time, e.g. 15 minutes,
 And it will pull in about 500MB of libraries/jars.
   
