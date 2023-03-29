@@ -15,6 +15,7 @@
  */
 package com.acme.statusmgr;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,24 +47,156 @@ public class StatusControllerDetailedTest {
        //todo StatusController.setSystemInfoFacade(null /* todo: Inject appropriate object */);
     }
 
-    @Test
-    public void detailedNameOnly() throws Exception {
-        this.mockMvc.perform(get("/server/status/detailed?name=Yankel"))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Yankel"))
-                .andExpect(jsonPath("$.requestCost").value(1))
-                .andExpect(jsonPath("$.statusDesc").value("Server is up"));
-    }
 
+    /**
+     * Tests that the server can handle requests with the "availableProcessors" detail.
+     * @throws Exception if something goes wrong while using the mock server
+     */
     @Test
-    public void detailedDetailsOnly() throws Exception {
-        this.mockMvc.perform(get("/server/status/detailed?details=availableProcessors"))
+    public void testAvailableProcessors() throws Exception{
+        this.mockMvc.perform(get("/server/status/detailed?details=availableProcessors&name=Avrohom"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Anonymous"))
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
                 .andExpect(jsonPath("$.requestCost").value(4))
                 .andExpect(jsonPath("$.statusDesc").value("Server is up, and there are 4 processors available"));
     }
 
+
+    /**
+     * Tests that the server can handle requests with the "freeJVMMemory" detail.
+     * @throws Exception if something goes wrong while using the mock server
+     */
+    @Test
+    public void testFreeJvmMemory() throws Exception{
+        this.mockMvc.perform(get("/server/status/detailed?details=freeJVMMemory&name=Avrohom"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.requestCost").value(8))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and there are 127268272 bytes of JVM memory free"));
+    }
+
+
+    /**
+     * Tests that the server can handle requests with the "totalJVMMemory" detail.
+     * @throws Exception if something goes wrong while using the mock server
+     */
+    @Test
+    public void testTotalJvmMemory() throws Exception{
+        this.mockMvc.perform(get("/server/status/detailed?details=totalJVMMemory&name=Avrohom"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.requestCost").value(14))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and there is a total of 159383552 bytes of JVM memory"));
+    }
+
+
+    /**
+     * Tests that the server can handle requests with the "jreVersion" detail.
+     * @throws Exception if something goes wrong while using the mock server
+     */
+    @Test
+    public void testJreVersion() throws Exception{
+        this.mockMvc.perform(get("/server/status/detailed?details=jreVersion&name=Avrohom"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.requestCost").value(20))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the JRE version is 15.0.2+7-27"));
+
+    }
+
+
+    /**
+     * Tests that the server can handle requests with the "tempLocation" detail.
+     * @throws Exception if something goes wrong while using the mock server
+     */
+    @Test
+    public void testTempLocation() throws Exception{
+        this.mockMvc.perform(get("/server/status/detailed?details=tempLocation&name=Avrohom"))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Avrohom"))
+                .andExpect(jsonPath("$.requestCost").value(30))
+                .andExpect(jsonPath("$.statusDesc").value("Server is up, and the server's temp file location is M:\\\\AppData\\\\Local\\\\Temp"));
+
+    }
+
+
+    /**
+     * Tests that the server can accept multiple details in one HTTP request.
+     * @throws Exception if something goes wrong while using the mock server
+     */
+    @Test
+    public void testRequestMultipleDetails() throws Exception {
+        this.mockMvc.perform(
+                        get("/server/status/detailed?details=tempLocation,totalJVMMemory,availableProcessors&name=Avrohom"))
+                .andDo(print()).andExpect(status().isOk())
+
+                .andExpect(jsonPath("$.contentHeader")
+                        .value("Server Status requested by Avrohom"))
+
+                .andExpect(jsonPath("$.requestCost")
+                        .value(46))
+
+                .andExpect(jsonPath("$.statusDesc")
+                        .value("Server is up, and the server's temp file location is " +
+                                "M:\\\\AppData\\\\Local\\\\Temp, and there is a total of 159383552 " +
+                                "bytes of JVM memory, and there are 4 processors available"));
+
+    }
+
+
+    /**
+     * Tests that the server does not accept requests without the details parameter.
+     * @throws Exception if something goes wrong while using the mock server
+     */
+    @Test
+    public void testDetailsAreRequired() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?name=Avrohom"))
+                .andDo(print()).andExpect(status().isBadRequest())
+                .andExpect(status().reason(Matchers.is(
+                        "Required request parameter 'details' for method parameter type List is not present")));
+
+    }
+
+
+    /**
+     * Tests that the server throws an error if the caller asked for a detail
+     * that doesn't exist.
+     * @throws Exception if something goes wrong while using the mock server
+     */
+    @Test
+    public void testNonExistentDetail() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?details=noSuchDetail&name=Avrohom"))
+                .andDo(print()).andExpect(status().isBadRequest())
+                .andExpect(status().reason(Matchers.is(
+                        "Invalid details option: noSuchDetail")));
+    }
+
+
+    /**
+     * Tests that the server allows multiple requests for the same detail.
+     * @throws Exception if something goes wrong while using the mock server
+     */
+    @Test
+    public void testRepeatedDetails() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed?details=freeJVMMemory,freeJVMMemory&name=Avrohom"))
+                .andDo(print()).andExpect(status().isOk())
+
+                .andExpect(jsonPath("$.contentHeader")
+                        .value("Server Status requested by Avrohom"))
+
+                .andExpect(jsonPath("$.requestCost")
+                        .value(15))
+
+                .andExpect(jsonPath("$.statusDesc")
+                        .value("Server is up, and there are 127268272 bytes of JVM " +
+                                "memory free, and there are 127268272 bytes of JVM memory free"));
+
+    }
+
+    /**
+     * Tests that details params can come before name
+     * @throws Exception if something goes wrong while using the mock server
+     */
     @Test
     public void detailedDetailsBeforeName() throws Exception {
         this.mockMvc.perform(get("/server/status/detailed?details=availableProcessors&name=Yankel"))
@@ -73,30 +206,10 @@ public class StatusControllerDetailedTest {
                 .andExpect(jsonPath("$.statusDesc").value("Server is up, and there are 4 processors available"));
     }
 
-    @Test
-    public void detailedRepeatedDetail() throws Exception {
-        this.mockMvc.perform(get("/server/status/detailed?name=Yankel&details=" +
-                        "availableProcessors,availableProcessors"))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Yankel"))
-                .andExpect(jsonPath("$.requestCost").value(7))
-                .andExpect(jsonPath("$.statusDesc").value(
-                        "Server is up, and there are 4 processors available, and there are 4 processors available"));
-    }
-
-    @Test
-    public void detailedAllDetails() throws Exception {
-        this.mockMvc.perform(get("/server/status/detailed?name=Yankel&details=" +
-                        "availableProcessors,freeJVMMemory,totalJVMMemory,jreVersion,tempLocation"))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.contentHeader").value("Server Status requested by Yankel"))
-                .andExpect(jsonPath("$.requestCost").value(72))
-                .andExpect(jsonPath("$.statusDesc").value(
-                        "Server is up, and there are 4 processors available, and there are 127268272 bytes " +
-                                "of JVM memory free, and there is a total of 159383552 bytes of JVM memory, and the JRE version" +
-                                " is 15.0.2+7-27, and the server's temp file location is M:\\\\AppData\\\\Local\\\\Temp"));
-    }
-
+    /**
+     * Tests that the server allows different/reverse order for details.
+     * @throws Exception if something goes wrong while using the mock server
+     */
     @Test
     public void detailedAllDetailsReverseOrder() throws Exception {
         this.mockMvc.perform(get("/server/status/detailed?name=Yankel&details=" +

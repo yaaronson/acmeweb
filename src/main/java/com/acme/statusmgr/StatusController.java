@@ -57,7 +57,7 @@ public class StatusController {
     @RequestMapping("/status/detailed")
     public ServerStatus getDetailedStatus(
             @RequestParam(value = "name", defaultValue = "Anonymous") String name,
-            @RequestParam(required = false) List<String> details) {
+            @RequestParam List<String> details) {
 
         ServerStatus detailedStatus = null;
 
