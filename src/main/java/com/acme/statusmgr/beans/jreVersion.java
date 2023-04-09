@@ -1,5 +1,8 @@
 package com.acme.statusmgr.beans;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class jreVersion implements serverInfo{
 
     private final serverInfo info;
@@ -8,7 +11,11 @@ public class jreVersion implements serverInfo{
         this.info = info;
     }
 
-    private static final detailsFacade details = new detailsFacade();
+    private static  detailsInterface details = new detailsFacade();
+
+    public static void setter(detailsInterface details){
+        jreVersion.details = details;
+    }
 
     @Override
     public long getId() {
@@ -22,7 +29,9 @@ public class jreVersion implements serverInfo{
 
     @Override
     public String getStatusDesc() {
-        return info.getStatusDesc() + "and the JRE version is" + details.jreVersion();
+        Logger logger = LoggerFactory.getLogger("JRE Version");
+        logger.info("Requesting to get the JRE version details");
+        return info.getStatusDesc() + ", and the JRE version is " + details.jreVersion();
     }
 
     @Override
