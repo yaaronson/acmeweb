@@ -8,7 +8,11 @@ public class freeJVMMemory implements serverInfo{
         this.info = info;
     }
 
-    private static final detailsFacade details = new detailsFacade();
+    private static  detailsInterface details = new detailsFacade();
+
+    public static void setter(detailsInterface details){
+        freeJVMMemory.details = details;
+    }
 
     @Override
     public long getId() {
@@ -22,7 +26,7 @@ public class freeJVMMemory implements serverInfo{
 
     @Override
     public String getStatusDesc() {
-        return info.getStatusDesc() + "and there are" + details.freeJVMMemory() +  " bytes of JVM memory free";
+        return info.getStatusDesc() + ", and there are " + details.freeJVMMemory() +  " bytes of JVM memory free";
     }
 
     @Override

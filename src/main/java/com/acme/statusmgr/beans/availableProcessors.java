@@ -4,7 +4,11 @@ public class availableProcessors implements serverInfo {
 
     private final serverInfo info;
 
-    private static final detailsFacade details = new detailsFacade();
+    private static  detailsInterface details = new detailsFacade();
+
+    public static void setter(detailsInterface details){
+        availableProcessors.details = details;
+    }
 
     public availableProcessors(serverInfo info) {
         this.info = info;
@@ -22,7 +26,7 @@ public class availableProcessors implements serverInfo {
 
     @Override
     public String getStatusDesc() {
-        return info.getStatusDesc() + "and there are" + details.availableProcessors() + "processors available";
+        return info.getStatusDesc() + ", and there are " + details.availableProcessors() + " processors available";
     }
 
     @Override
