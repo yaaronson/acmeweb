@@ -30,6 +30,17 @@ The `name` parameter value overrides the default value of “Anonymous” and is
 {"id":2,"contentHeader":"Server Status requested by Moishe","statusDesc":"Server is up"}
 ----`
 
+It can also take in a request with many details such as: 
+http://localhost:8080/server/status/detailed?name=Yankel&details=availableProcessors,freeJVMMemory,totalJVMMemory,jreVersion,temp
+
+Which will respond with: 
+
+{"id":1,"requestCost":72,"statusDesc":"Server is up, and there are 4 processors available, and there are 27912920 bytes of JVM memory free, and there is a total of 51380224 bytes of JVM memory, and the JRE version is 18.0.2.1, and the server's temp file location is C:\\Users\\AARONA~1\\AppData\\Local\\Temp","contentHeader":"Server Status requested by Yankel"}
+
+And if there is an invalid data type it will repond like: 
+
+{timestamp=Thu Apr 20 00:12:26 EDT 2023, status=400, error=Bad Request, exception=org.springframework.web.server.ResponseStatusException, message=Invalid details option: junkERROR, path=/server/status/detailed}
+
 **--> Syntax for URLS:**
 *    All start with /server
 *    /status  will give back status of server
