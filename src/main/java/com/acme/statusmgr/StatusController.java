@@ -3,9 +3,12 @@ package com.acme.statusmgr;
 import com.acme.statusmgr.beans.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
@@ -61,7 +64,8 @@ public class StatusController {
             @RequestParam(value = "name", defaultValue = "Anonymous") String name,
             @RequestParam List<String> details) {
 
-        serverInfo detailedStatus = new ServerStatus();
+        serverInfo detailedStatus = new ServerStatus(counter.incrementAndGet(),
+                String.format(template, name));
 
         if (details != null) {
             Logger logger = LoggerFactory.getLogger("StatusController");
@@ -71,13 +75,13 @@ public class StatusController {
 
             for (int i =0; i < details.size(); i++ ){
                 switch (details.get(i)) {
-                    case "availableProcessor":
+                    case "availableProcessors":
                     detailedStatus = new availableProcessors(detailedStatus);
                         break;
-                    case "freeJVMmemory":
+                    case "freeJVMMemory":
                         detailedStatus = new freeJVMMemory(detailedStatus);
                         break;
-                    case "totalJVMmemory":
+                    case "totalJVMMemory":
                         detailedStatus = new totalJVMMemory(detailedStatus);
                         break;
                     case "jreVersion":
@@ -87,7 +91,8 @@ public class StatusController {
                         detailedStatus = new tempLocation(detailedStatus);
                         break;
                     default:
-                    throw new RuntimeException("Error! Invalid Info");
+                        throw new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST, "Invalid details option: " + details.get(i));
                 }
 
             }
@@ -97,3 +102,5 @@ public class StatusController {
     }
 
 }
+
+
