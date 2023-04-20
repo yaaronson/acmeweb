@@ -45,7 +45,6 @@ public class StatusControllerDetailedTest {
      */
     @BeforeAll
     public static void beforeAll() {
-       //todo StatusController.setSystemInfoFacade(null /* todo: Inject appropriate object */);
         availableProcessors.setter(new dummy());
         jreVersion.setter(new dummy());
         totalJVMMemory.setter(new dummy());

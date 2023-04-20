@@ -7,6 +7,7 @@ public class availableProcessors implements serverInfo {
     private static  detailsInterface details = new detailsFacade();
 
     public static void setter(detailsInterface details){
+
         availableProcessors.details = details;
     }
 
