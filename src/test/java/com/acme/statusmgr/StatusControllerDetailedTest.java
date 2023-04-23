@@ -15,6 +15,7 @@
  */
 package com.acme.statusmgr;
 
+import com.acme.statusmgr.beans.*;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,11 @@ public class StatusControllerDetailedTest {
      */
     @BeforeAll
     public static void beforeAll() {
-       //todo StatusController.setSystemInfoFacade(null /* todo: Inject appropriate object */);
+        availableProcessors.setter(new dummy());
+        jreVersion.setter(new dummy());
+        totalJVMMemory.setter(new dummy());
+        tempLocation.setter(new dummy());
+        freeJVMMemory.setter(new dummy());
     }
 
 
@@ -164,7 +169,7 @@ public class StatusControllerDetailedTest {
      * @throws Exception if something goes wrong while using the mock server
      */
     @Test
-    public void testNonExistentDetail() throws Exception {
+    public void testNonExistentDetail() throws Exception { //
         this.mockMvc.perform(get("/server/status/detailed?details=noSuchDetail&name=Yankel"))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(status().reason(Matchers.is(
@@ -224,14 +229,14 @@ public class StatusControllerDetailedTest {
     }
 
     @Test
-    public void detailedInvalidDetail() throws Exception {
+    public void detailedInvalidDetail() throws Exception {//
         this.mockMvc.perform(get("/server/status/detailed?name=Yankel&details=JunkStatus"))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(status().reason(is("Invalid details option: JunkStatus")));
     }
 
     @Test
-    public void detailedInvalidDetailAfterValidDetail() throws Exception {
+    public void detailedInvalidDetailAfterValidDetail() throws Exception {//
         this.mockMvc.perform(get("/server/status/detailed?name=Yankel&details=availableProcessors,networkBandwidth"))
                 .andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(status().reason(is("Invalid details option: networkBandwidth")));
